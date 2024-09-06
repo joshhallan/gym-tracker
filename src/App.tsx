@@ -26,7 +26,7 @@ function App() {
   useEffect(() => {
     var elems = document.querySelectorAll(".sidenav");
     // @ts-ignore
-    var instances = M.Sidenav.init(elems, {});
+    var instances = M.Sidenav.init(elems, { closeOnClick: true });
   }, []);
 
   return (
@@ -34,7 +34,7 @@ function App() {
       <header>
         <nav className="show-on-med-and-down hide-on-large-only">
           <div className="nav-wrapper teal darken-1 center">
-            <Link to="/" className="brand-logo">
+            <Link className="sidenav-close brand-logo" to="/">
               Tracker
             </Link>
             <a
@@ -72,35 +72,38 @@ function App() {
 
           {!isAuth && (
             <li>
-              <Link to={"/login"}>
+              <Link className="sidenav-close" to={"/login"}>
                 Login <i className="material-icons">login</i>
               </Link>
             </li>
           )}
           {!isAuth && (
             <li>
-              <Link to={"/signup"}>
+              <Link className="sidenav-close" to={"/signup"}>
                 <i className="material-icons">app_registration</i>Sign Up
               </Link>
             </li>
           )}
           {isAuth && (
             <li>
-              <Link to={"/"}>
+              <Link className="sidenav-close" to={"/"}>
                 <i className="material-icons">home</i>Home
               </Link>
             </li>
           )}
           {isAuth && (
             <li>
-              <Link to={"/routines"}>
+              <Link className="sidenav-close" to={"/routines"}>
                 <i className="material-icons">edit</i>Routines
               </Link>
             </li>
           )}
           {isAuth && (
             <li>
-              <Link to={"/settings"}>
+              <Link
+                className="sidenav-close"
+                to={"/settings"}
+              >
                 <i className="material-icons">settings</i>Settings
               </Link>
             </li>

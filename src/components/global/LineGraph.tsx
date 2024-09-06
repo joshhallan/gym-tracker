@@ -8,7 +8,6 @@ import {
 } from "recharts";
 
 const LineGraph = ({ data }) => {
-  console.log(data);
   return (
     <ResponsiveContainer width={"99%"} height={300}>
       <LineChart width={600} height={300} data={data}>

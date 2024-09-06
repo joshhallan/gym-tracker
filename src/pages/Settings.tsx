@@ -59,7 +59,6 @@ const Settings = () => {
                     id="firstName"
                     type="text"
                     className="validate"
-                    value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                   />
                   <label htmlFor="firstName">First name</label>
@@ -69,7 +68,6 @@ const Settings = () => {
                     id="lastName"
                     type="text"
                     className="validate"
-                    value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                   />
                   <label htmlFor="lastName">Last name</label>
