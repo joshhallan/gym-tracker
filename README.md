@@ -20,5 +20,12 @@ This is a little app that I'm working on to be able to track progress in the gym
   * Add entry for exercise
   * Delete entry for exercise
 
+### TODO
+* Settings
+  * Change first name
+  * Change last name
+  * Change email address
+  * Change password
+
 
 
