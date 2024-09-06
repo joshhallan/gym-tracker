@@ -41,6 +41,9 @@ const Routines = (props) => {
     const routinesData = routinesSnapshot.docs.map(async (routineDoc) => {
       const routineId = routineDoc.id;
       const routine = routineDoc.data();
+      if (routine.isActive === true) {
+        setSelectedActiveRoutineId(routine.id);
+      }
 
       const splitsSnapshot = await getDocs(
         query(collection(db, "splits"), where("routineId", "==", routineId))
@@ -210,13 +213,13 @@ const Routines = (props) => {
       });
 
       // Fetch all routines for the current user
-      const userId = auth.currentUser.uid;
+      const userId = auth.currentUser!.uid;
       const routinesSnapshot = await getDocs(
         query(collection(db, "routines"), where("userId", "==", userId))
       );
 
       // Update each routine's isActive field based on its ID
-      const updatedRoutines = await Promise.all(
+      await Promise.all(
         routinesSnapshot.docs.map(async (doc) => {
           const routine = doc.data();
           const updatedRoutine = {
@@ -232,7 +235,7 @@ const Routines = (props) => {
       );
 
       // Update the state with the fetched and updated routines
-      setRoutines(updatedRoutines);
+      fetchRoutinesAndSplits();
     } catch (error) {
       console.error("Error updating routine activity:", error);
     }
@@ -508,9 +511,7 @@ const Routines = (props) => {
                                 </div>
                                 <div className="col s12">
                                   <button
-                                    onClick={() =>
-                                      deleteSplit(split.id)
-                                    }
+                                    onClick={() => deleteSplit(split.id)}
                                     className="waves-effect waves-light btn red"
                                   >
                                     Delete Split
@@ -538,9 +539,7 @@ const Routines = (props) => {
                                         <td>
                                           <button
                                             onClick={() =>
-                                              deleteExercise(
-                                                split.id
-                                              )
+                                              deleteExercise(split.id)
                                             }
                                             className="waves-effect waves-light btn red"
                                           >
