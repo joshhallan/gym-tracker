@@ -14,7 +14,7 @@ This is a little app that I'm working on to be able to track progress in the gym
 * Dashboard / home
   * View active routine
   * Track exercise progress
-  * View historical data via
+  * View historical data per exercise via
     * Graph view
     * Table view
   * Add entry for exercise
