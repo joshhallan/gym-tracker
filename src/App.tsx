@@ -8,6 +8,7 @@ import { signOut } from "firebase/auth";
 import M from "materialize-css";
 import "./App.scss";
 import Routines from "./pages/Routines";
+import Settings from "./pages/Settings";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -23,7 +24,7 @@ function App() {
   };
 
   useEffect(() => {
-    var elems = document.querySelectorAll('.sidenav');
+    var elems = document.querySelectorAll(".sidenav");
     // @ts-ignore
     var instances = M.Sidenav.init(elems, {});
   }, []);
@@ -32,14 +33,14 @@ function App() {
     <BrowserRouter>
       <header>
         <nav className="show-on-med-and-down hide-on-large-only">
-          <div className="nav-wrapper grey lighten-3 center">
-            <Link to="/" className="brand-logo black-text">
+          <div className="nav-wrapper teal darken-1 center">
+            <Link to="/" className="brand-logo">
               Tracker
             </Link>
             <a
               href="#"
               data-target="slide-out"
-              className="sidenav-trigger right black-text"
+              className="sidenav-trigger right"
             >
               <i className="material-icons ">menu</i>
             </a>
@@ -49,7 +50,7 @@ function App() {
         <ul className="sidenav sidenav-fixed" id="slide-out">
           <li>
             <div className="user-view">
-              <div className="background blue lighten-3" />
+              <div className="background teal darken-1" />
               {!isAuth && (
                 <>
                   <span className="white-text email">Welcome!</span>
@@ -97,6 +98,13 @@ function App() {
               </Link>
             </li>
           )}
+          {isAuth && (
+            <li>
+              <Link to={"/settings"}>
+                <i className="material-icons">settings</i>Settings
+              </Link>
+            </li>
+          )}
 
           {isAuth && (
             <>
@@ -118,6 +126,7 @@ function App() {
           <Route path="/signup" element={<SignUp setIsAuth={setIsAuth} />} />
           <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
           <Route path="/routines" element={<Routines isAuth={isAuth} />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
     </BrowserRouter>
