@@ -1,30 +1,24 @@
-# React + TypeScript + Vite
+# Gym tracker
+## Description
+This is a little app that I'm working on to be able to track progress in the gym created using vite and firebase
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Features
+* Login
+* Sign up
+* Routines
+  * Create new routine
+  * Create new split and add to existing routine
+  * Create new exercise to track and add to existing split
+  * If you have multiple routines stored you can set an active routine
+  * Delete routines, splits and exercises
+* Dashboard / home
+  * View active routine
+  * Track exercise progress
+  * View historical data via
+    * Graph view
+    * Table view
+  * Add entry for exercise
+  * Delete entry for exercise
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
