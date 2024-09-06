@@ -37,9 +37,9 @@ function App() {
             <a
               href="#"
               data-target="slide-out"
-              className="sidenav-trigger right"
+              className="sidenav-trigger right black-text"
             >
-              <i className="material-icons">menu</i>
+              <i className="material-icons ">menu</i>
             </a>
           </div>
         </nav>
