@@ -29,8 +29,7 @@ function App() {
   return (
     <BrowserRouter>
       <header>
-        {/* <nav> */}
-        <nav className="hide-on-med-and-up"> 
+        <nav className="show-on-med-and-down hide-on-large-only">
           <div className="nav-wrapper grey lighten-3 center">
             <Link to="/" className="brand-logo black-text">
               Tracker
