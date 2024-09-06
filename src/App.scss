@@ -1,0 +1,17 @@
+body {
+  background-color: #e6e6e6;
+}
+
+header, .wrapper, footer {
+  padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+  header, .wrapper, footer {
+    padding-left: 0;
+  }
+}
+
+// .background {
+//   background-color: blue;
+// }

@@ -1,25 +1,125 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import { auth } from "./firebase";
+import { signOut } from "firebase/auth";
+import M from "materialize-css";
+import "./App.scss";
+import Routines from "./pages/Routines";
 
 function App() {
+  const [isAuth, setIsAuth] = useState(false);
+
+  const logOutHandler = async () => {
+    try {
+      await signOut(auth);
+      window.location.pathname = "/login";
+      setIsAuth(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    M.AutoInit();
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <BrowserRouter>
+      <header>
+        {/* <nav> */}
+        <nav className="hide-on-med-and-up"> 
+          <div className="nav-wrapper grey lighten-3 center">
+            <Link to="/" className="brand-logo black-text">
+              Tracker
+            </Link>
+            <a
+              href="#"
+              data-target="slide-out"
+              className="sidenav-trigger right"
+            >
+              <i className="material-icons">menu</i>
+            </a>
+          </div>
+        </nav>
+
+        <ul className="sidenav sidenav-fixed" id="slide-out">
+          <li>
+            <div className="user-view">
+              <div className="background blue lighten-3" />
+              {!isAuth && (
+                <>
+                  <span className="white-text email">Welcome!</span>
+                  <span className="white-text email">
+                    Sign up or log in below!
+                  </span>
+                </>
+              )}
+              {isAuth && (
+                <>
+                  <span className="white-text email">Welcome!</span>
+                  <span className="white-text email">
+                    {auth.currentUser.email}
+                  </span>
+                </>
+              )}
+            </div>
+          </li>
+
+          {!isAuth && (
+            <li>
+              <Link to={"/login"}>
+                Login <i className="material-icons">login</i>
+              </Link>
+            </li>
+          )}
+          {!isAuth && (
+            <li>
+              <Link to={"/signup"}>
+                <i className="material-icons">app_registration</i>Sign Up
+              </Link>
+            </li>
+          )}
+          {isAuth && (
+            <li>
+              <Link to={"/"}>
+                <i className="material-icons">home</i>Home
+              </Link>
+            </li>
+          )}
+          {isAuth && (
+            <li>
+              <Link to={"/routines"}>
+                <i className="material-icons">edit</i>Routines
+              </Link>
+            </li>
+          )}
+
+          {isAuth && (
+            <>
+              <li>
+                <div className="divider"></div>
+              </li>
+              <li>
+                <a href="#" onClick={logOutHandler}>
+                  <i className="material-icons">logout</i>Logout
+                </a>
+              </li>
+            </>
+          )}
+        </ul>
       </header>
-    </div>
+      <div className="wrapper">
+        <Routes>
+          <Route path="/" element={<Home isAuth={isAuth} />} />
+          <Route path="/signup" element={<SignUp setIsAuth={setIsAuth} />} />
+          <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
+          <Route path="/routines" element={<Routines isAuth={isAuth} />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
