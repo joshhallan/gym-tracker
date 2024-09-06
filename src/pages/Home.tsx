@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { db, auth } from "../firebase";
 import {
   collection,
@@ -14,12 +14,38 @@ import "../components/common/toast.scss";
 import M from "materialize-css";
 import LineGraph from "../components/global/LineGraph";
 
-const Home = (props) => {
+const Home = (props: any) => {
+
+  type Routine = {
+    id?: string;
+    name?: string;
+    splits?: Split[];
+  };
+
+  type Split = {
+    id?: string;
+    name?: string;
+    exercises?: Exercise[];
+  };
+
+  type Exercise = {
+    id?: string;
+    name?: string;
+    minReps?: number;
+    maxReps?: number;
+    sets?: number;
+    history?: { date: string; weight: number; reps: number }[];
+  };
+
   const navigate = useNavigate();
-  const [routine, setRoutines] = useState({});
+  const [routine, setRoutines] = useState<Routine>({
+    id: "",
+    name: "",
+    splits: [],
+  });
 
   const fetchRoutinesAndSplits = async () => {
-    const userId = auth.currentUser.uid;
+    const userId = auth.currentUser!.uid;
 
     if (auth.currentUser !== null) {
       const routinesSnapshot = await getDocs(
@@ -32,12 +58,6 @@ const Home = (props) => {
 
       if (routinesSnapshot.size > 1) {
         console.warn("Multiple routines found. Expected only one.");
-      }
-
-      if (routinesSnapshot.empty) {
-        // Handle case where no routine is found (optional)
-        setRoutines({});
-        return;
       }
 
       const routineDoc = routinesSnapshot.docs[0];
@@ -69,23 +89,21 @@ const Home = (props) => {
         };
       });
 
-      const resolvedSplits = await Promise.all(splitsData);
-
-      const completeRoutine = {
-        id: routine.id,
-        name: routine.name,
-        splits: resolvedSplits,
-      };
-
-      setRoutines(completeRoutine);
+      let resolvedSplits = await Promise.all(splitsData);
+      
+      setRoutines({id: routine.id, name: routine.name, splits: resolvedSplits})
     }
   };
 
-  const addExerciseEntry = async (exerciseId, event) => {
+  const addExerciseEntry = async (exerciseId: string) => {
     event.preventDefault();
 
-    const weightInput = document.getElementById(`weight${exerciseId}`);
-    const repsInput = document.getElementById(`reps${exerciseId}`);
+    const weightInput: HTMLInputElement = document.getElementById(
+      `weight${exerciseId}`
+    ) as HTMLInputElement;
+    const repsInput: HTMLInputElement = document.getElementById(
+      `reps${exerciseId}`
+    ) as HTMLInputElement;
 
     const weight = parseFloat(weightInput.value);
     const reps = parseInt(repsInput.value);
@@ -196,6 +214,7 @@ const Home = (props) => {
 
   useEffect(() => {
     var elems = document.querySelectorAll(".collapsible");
+    // @ts-ignore
     var instances = M.Collapsible.init(elems, {});
   }, [routine]);
 
@@ -219,7 +238,7 @@ const Home = (props) => {
               <p>Splits</p>
               <ul className="collection">
                 {routine.splits &&
-                  routine.splits.map((split) => (
+                  routine.splits.map((split: any) => (
                     <li key={split.id} className="collection-item">
                       {split.name}
                     </li>
@@ -231,7 +250,7 @@ const Home = (props) => {
       </div>
 
       {routine.splits &&
-        routine.splits.map((split) => (
+        routine.splits.map((split: any) => (
           <div className="row" key={split.id}>
             <div className="col s12">
               <div className="card ">
@@ -262,18 +281,14 @@ const Home = (props) => {
                                     <div className="col s12">
                                       <h3>Historical data</h3>
                                       <LineGraph
-                                        data={
-                                          exercise.history.length > 0
-                                            ? exercise.history.map(
-                                                ({ date, weight }) => ({
-                                                  x: new Date(
-                                                    date
-                                                  ).toLocaleDateString(),
-                                                  y: weight,
-                                                })
-                                              )
-                                            : [{ error: "No data" }]
-                                        }
+                                        data={exercise.history.map(
+                                          ({ date, weight }) => ({
+                                            x: new Date(
+                                              date
+                                            ).toLocaleDateString(),
+                                            y: weight,
+                                          })
+                                        )}
                                       />
                                     </div>
                                     <div className="col s12">
@@ -325,7 +340,7 @@ const Home = (props) => {
                                 ) : (
                                   <div className="col s12">
                                     <h3>Historical data</h3>
-                                    <h6>Sorry no historical data available</h6>
+                                    <h6>No historical data available</h6>
                                   </div>
                                 )}
 
@@ -333,7 +348,7 @@ const Home = (props) => {
                                   <h3>Add entry</h3>
                                   <form
                                     onSubmit={() =>
-                                      addExerciseEntry(exercise.id, event)
+                                      addExerciseEntry(exercise.id)
                                     }
                                   >
                                     <div className="row">

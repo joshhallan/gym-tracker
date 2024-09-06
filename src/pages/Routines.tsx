@@ -33,7 +33,7 @@ const Routines = (props) => {
   const [selectedActiveRoutineId, setSelectedActiveRoutineId] = useState(null);
 
   const fetchRoutinesAndSplits = async () => {
-    const userId = auth.currentUser.uid;
+    const userId = auth.currentUser!.uid;
 
     const routinesSnapshot = await getDocs(
       query(collection(db, "routines"), where("userId", "==", userId))
@@ -91,7 +91,7 @@ const Routines = (props) => {
       let newDocRef = doc(collection(db, "routines"));
       await setDoc(newDocRef, {
         name: capitalizedRoutineName,
-        userId: auth.currentUser.uid,
+        userId: auth.currentUser!.uid,
         id: newDocRef.id,
         isActive: false,
       });
@@ -127,7 +127,6 @@ const Routines = (props) => {
       const docRef = await addDoc(collection(db, "splits"), {
         name: capitalizedSplitName,
         routineId: selectedRoutine,
-        exerciseIds: [],
       });
 
       // Save the generated document ID as a field
@@ -153,12 +152,7 @@ const Routines = (props) => {
       M.toast({ html: "Please enter an exercise name", classes: "toast red" });
       return;
     }
-    if (
-      repRangeMin === "" ||
-      repRangeMax === "" ||
-      !isFinite(repRangeMin) ||
-      !isFinite(repRangeMax)
-    ) {
+    if (repRangeMin === "" || repRangeMax === "") {
       M.toast({
         html: "Please enter valid rep range (numbers)",
         classes: "toast red",
@@ -279,7 +273,7 @@ const Routines = (props) => {
   };
 
   // Function to delete a split
-  const deleteSplit = async (routineId, splitId) => {
+  const deleteSplit = async (splitId) => {
     console.log(splitId);
     try {
       // Get and delete exercises associated with the split
@@ -302,7 +296,7 @@ const Routines = (props) => {
   };
 
   // Function to delete an exercise
-  const deleteExercise = async (splitId, exerciseId) => {
+  const deleteExercise = async (exerciseId) => {
     try {
       await deleteDoc(doc(db, "exercises", exerciseId));
       M.toast({ html: "Exercise deleted", classes: "toast teal" });
@@ -316,6 +310,7 @@ const Routines = (props) => {
   useEffect(() => {
     fetchRoutinesAndSplits();
     var elems = document.querySelectorAll(".collapsible");
+    // @ts-ignore
     var instances = M.Collapsible.init(elems, {});
   }, []);
 
@@ -439,7 +434,7 @@ const Routines = (props) => {
                 <label htmlFor="sets">Sets</label>
               </div>
               <div className="input-field col s12">
-                {routines.map((routine, i) => {
+                {routines.map((routine) => {
                   return (
                     <fieldset>
                       <legend>{routine.name}</legend>
@@ -503,7 +498,7 @@ const Routines = (props) => {
                       Delete Routine
                     </button>
                     <ul>
-                      {routine.splts &&
+                      {routine.splits &&
                         routine.splits.map((split) => (
                           <>
                             <li key={split.id}>
@@ -514,7 +509,7 @@ const Routines = (props) => {
                                 <div className="col s12">
                                   <button
                                     onClick={() =>
-                                      deleteSplit(routine.id, split.id)
+                                      deleteSplit(split.id)
                                     }
                                     className="waves-effect waves-light btn red"
                                   >
@@ -544,7 +539,6 @@ const Routines = (props) => {
                                           <button
                                             onClick={() =>
                                               deleteExercise(
-                                                exercise.id,
                                                 split.id
                                               )
                                             }

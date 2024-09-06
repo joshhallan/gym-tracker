@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -61,7 +61,7 @@ function App() {
                 <>
                   <span className="white-text email">Welcome!</span>
                   <span className="white-text email">
-                    {auth.currentUser.email}
+                    {auth.currentUser!.email}
                   </span>
                 </>
               )}
