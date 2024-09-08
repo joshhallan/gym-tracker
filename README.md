@@ -24,5 +24,17 @@ This is a little app that I'm working on to be able to track progress in the gym
   * Change last name
   * Change password
 
+### TODO
+* Pages
+** Community
+*** Ability to set a routine as public and share it with others
+*** Add / find friends and view their recent progress
+** Weight
+*** Add and track weight
+*** Calculate macros and track daily intake
+
+* General improvements
+** UI needs an overhaul 
+
 
 
